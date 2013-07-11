@@ -83,9 +83,14 @@ class Grid(object):
 
 
 def get_next_word(words, letters=None):
-    if letters:
-        words = filter(lambda word: any(n for n in letters if n in word), words)
-    return words[0]
+    letters = set(letters)
+    for word in words:
+        for letter in set(word):
+            if letter in letters:
+                return word
+    #if letters:
+    #    words = filter(lambda word: any(n for n in letters if n in word), words)
+    #return words[0]
 
 
 def main():
