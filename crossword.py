@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 TEST_WORDS = """AARDVARK
 HAMMER
 HELLO
@@ -32,30 +30,6 @@ class nicedict(dict):
 
 
 class Grid(object):
-    """
-    >>> g = Grid()
-    >>> g.put_word('BEER', 0, 0, HORIZONTAL)
-    >>> g.draw()
-    BEER
-    >>> g.put_word('PIZZA', 5, 0, VERTICAL)
-    >>> g.grid
-    >>> g.draw()
-    BEERP
-        I
-        Z
-        Z
-        A
-    >>> g.put_word('HELLO', 1, -1, VERTICAL)
-    >>> g.draw()
-    B E E R   P 
-              I 
-              Z 
-              Z 
-              A 
-    >>> g.crossword('DOJO', 'HELLO')
-    >>> g.draw()
-    """
-
     def __init__(self):
         self.grid = nicedict()
         self.words = dict()
@@ -65,9 +39,9 @@ class Grid(object):
         try:
             for i, letter in enumerate(word):
                 if orientation is VERTICAL:
-                    grid[(x, y+i)] = letter
+                    grid[(x, y + i)] = letter
                 else:
-                    grid[(x+i, y)] = letter
+                    grid[(x + i, y)] = letter
             self.grid = grid
             self.words[word] = (x, y, orientation)
             return True
@@ -97,13 +71,13 @@ class Grid(object):
         return self.put_word(word, x, y, o)
 
     def draw(self):
-        minx = min(x for x, y in self.grid.keys())
-        miny = min(y for x, y in self.grid.keys())
-        maxx = max(x for x, y in self.grid.keys())
-        maxy = max(y for x, y in self.grid.keys())
+        min_x = min(x for x, y in self.grid.keys())
+        min_y = min(y for x, y in self.grid.keys())
+        max_x = max(x for x, y in self.grid.keys())
+        max_y = max(y for x, y in self.grid.keys())
 
-        for y in range(miny, maxy+1):
-            for x in range(minx, maxx+1):
+        for y in range(min_y, max_y + 1):
+            for x in range(min_x, max_x + 1):
                 print self.grid.get((x, y), ' '),
             print ''
 
@@ -123,7 +97,7 @@ def main():
 
     grid.put_word(word, 0, 0, VERTICAL)
 
-    for i in range(9999):
+    for _ in range(9999):
         if not words:
             break
 
@@ -135,7 +109,7 @@ def main():
         else:
             words.append(nextword)
     else:
-        pass
+        print "Could not place", words
 
     grid.draw()
 
