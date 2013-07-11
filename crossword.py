@@ -88,9 +88,6 @@ def get_next_word(words, letters=None):
         for letter in set(word):
             if letter in letters:
                 return word
-    #if letters:
-    #    words = filter(lambda word: any(n for n in letters if n in word), words)
-    #return words[0]
 
 
 def main():
