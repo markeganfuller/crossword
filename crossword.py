@@ -7,7 +7,7 @@ PYTHON
 DOJO
 LONDON
 PIZZA
-BEER
+BEAR
 """.split()
 
 VERTICAL = 1
