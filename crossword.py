@@ -70,6 +70,14 @@ class Grid(object):
 
         return self.put_word(word, x, y, o)
 
+    def crosswordplus(self, word):
+        for w in self.words.keys():
+            try:
+                if self.crossword(word, w):
+                    return w
+            except AssertionError:
+                pass
+
     def draw(self):
         min_x = min(x for x, y in self.grid.keys())
         min_y = min(y for x, y in self.grid.keys())
@@ -103,13 +111,12 @@ def main():
         if not words:
             break
 
-        nextword = get_next_word(words, word)
-        words.remove(nextword)
+        for nextword in list(words):
+            if grid.crosswordplus(nextword):
+                word = nextword
+                words.remove(nextword)
+                break
 
-        if grid.crossword(nextword, word):
-            word = nextword
-        else:
-            words.append(nextword)
     else:
         print "Could not place", words
 
