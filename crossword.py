@@ -102,7 +102,7 @@ def main():
     grid = Grid()
 
     words = list(TEST_WORDS)
-    words = sorted(words, key=lambda k: len(k))
+    words = sorted(words, key=len)
     word = words.pop()
 
     grid.put_word(word, 0, 0, VERTICAL)
