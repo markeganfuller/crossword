@@ -26,7 +26,8 @@ class nicedict(dict):
 
     def __setitem__(self, key, value):
         if key in self.keys():
-            raise KeyExists(key)
+            if self[key] != value:
+                raise KeyExists(key)
         super(nicedict, self).__setitem__(key, value)
 
 
@@ -61,7 +62,6 @@ class Grid(object):
 
     def put_word(self, word, x, y, orientation=VERTICAL):
         grid = nicedict(self.grid)
-        self.words[word] = (x, y, orientation)
         try:
             for i, letter in enumerate(word):
                 if orientation is VERTICAL:
@@ -69,6 +69,7 @@ class Grid(object):
                 else:
                     grid[(x+i, y)] = letter
             self.grid = grid
+            self.words[word] = (x, y, orientation)
             return True
         except KeyExists:
             return False
@@ -110,16 +111,15 @@ class Grid(object):
 def get_next_word(words, letters=None):
     if letters:
         words = filter(lambda word: any(n for n in letters if n in word), words)
-    return sorted(words, key=lambda k: len(k))[0]
+    return words[0]
 
 
 def main():
     grid = Grid()
 
     words = list(TEST_WORDS)
-
-    word = get_next_word(words)
-    words.remove(word)
+    words = sorted(words, key=lambda k: len(k))
+    word = words.pop()
 
     grid.put_word(word, 0, 0, VERTICAL)
 
@@ -128,16 +128,19 @@ def main():
             break
 
         nextword = get_next_word(words, word)
+        words.remove(nextword)
 
         if grid.crossword(nextword, word):
-            words.remove(nextword)
             word = nextword
         else:
-            words.remove(nextword)
             words.append(nextword)
+    else:
+        pass
 
-
-        words.remove(word)
+    grid.draw()
 
     return word
 
+
+if __name__ == '__main__':
+    main()
